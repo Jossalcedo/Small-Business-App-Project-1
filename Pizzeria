@@ -1,0 +1,316 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <fstream>
+using namespace std;
+
+void showSpecialtyMenu();
+void showSubTotal(double & totalSpes, double, int);
+void toppings(double & total, double & numtop, double & price ); // Topping section for custom pizza
+void menutop(int, int, int);
+void payment(); //Card Payment Void 
+
+int num, typetop, selection;
+double  total;
+double totalSpes;
+double GRANDTOTAL;
+double numtop;
+double price;
+
+//MAIN******************************
+int main()
+{
+  int typeOfPizza,total1;     //Variable definitions
+  int choice,   // To hold a menu choice
+    quantity, // To hold a number of quantity
+    size;     // To hold a number for size
+    
+  const int CARNIVORE_CHOICE= 1,
+          BBQ_CHICKEN_CHOICE = 2,
+          HAWAIIAN_CHOICE = 3,
+          QUIT_CHOICE = 4,
+          SMALL_SIZE_CHOICE = 5,
+          MEDIUM_SIZE_CHOICE = 6, 
+          LARGE_SIZE_CHOICE = 7;
+  const double SMALL= 10.00,
+             MEDIUM = 15.00,
+             LARGE = 20.00;
+cout << "\t\t\t Welcome to Yeboah's Pizzeria!\n\n" ;
+cout << "- Would you like our specialty pizza or create your own?\n" << "Please type in 1 for our specialty pizza or type in 2 to create your own pizza." << endl; 
+cin >>typeOfPizza;
+
+
+  while (typeOfPizza != 1 && typeOfPizza != 2)        // While loop will validate and ask the customer 
+     {                                                   // for a number choice to choose the type of pizza.
+      cout << "Please type in [1] or [2].\n";
+      cin >>typeOfPizza;
+      }
+  if (typeOfPizza == 1)
+  {
+    cout << "You have chosen our specialty pizza." << endl;
+     // ===================================THIS IS ONLY IF SPECIALTY PIZZA WAS SELECTED!!!======= =========================================
+    showSpecialtyMenu(); 
+    cin >> choice;
+  
+    // Validate the menu selection.
+    while (choice < CARNIVORE_CHOICE || choice > QUIT_CHOICE)
+      {
+        cout << "Please enter a valid menu choice: ";
+        cin >> choice;
+      } 
+
+// If the user does not want to quit, proceed.
+ if (choice != QUIT_CHOICE)
+ {
+    // Display the pizza type.
+     // Display the menu and get the user's choice.
+ switch (choice)
+  {
+    case CARNIVORE_CHOICE:
+      cout << "You have chosen the Carnivore Pizza\n";
+      break;
+    case BBQ_CHICKEN_CHOICE:
+     cout << "You have chosen the BBQ Chicken Pizza\n";;
+      break;
+    case HAWAIIAN_CHOICE:
+      cout << "You have chosen the Hawaiian Pizza\n";;
+ }
+
+ // Asks the user to choose a pizza size.
+ cout << "- What size would you like? (numbers 5-7):";
+ cin >> size;
+
+while (size < SMALL_SIZE_CHOICE || size > LARGE_SIZE_CHOICE)
+  {
+    cout << "Please enter a valid menu size: ";
+    cin >> size;
+  }
+
+ // Get the number of pizzas.
+    cout << "- How many pies would you like?: ";
+     cin >> quantity;
+
+ // Display the price.
+      switch (size)
+        {
+          case SMALL_SIZE_CHOICE:
+            showSubTotal(totalSpes, SMALL, quantity);
+            break;
+          case MEDIUM_SIZE_CHOICE:
+            showSubTotal(totalSpes,MEDIUM, quantity);
+            break;
+          case LARGE_SIZE_CHOICE:
+            showSubTotal(totalSpes, LARGE, quantity);
+      }
+ int custchoice;
+
+ cout << "Would you like a custom pizza? Type 1 for yes and 2 for no. " << endl;
+  cin >> custchoice;
+    if(custchoice == 1)
+    {
+     toppings(total, numtop, price);
+
+    GRANDTOTAL= (total + totalSpes);
+    cout << "Your Grand total is $" << GRANDTOTAL << endl;
+
+
+    
+     if (custchoice == 2)
+     {
+      cout<< "Thank You!"<<endl;
+      }
+    }
+  
+  
+  payment(); // Card Payment
+ 
+ } while (choice != QUIT_CHOICE);
+    
+}      // if statement will test for true/false.
+  
+ 
+  
+  else if (typeOfPizza == 2)
+   {                                  // inputs 1 then the cout statement will execute.
+        
+        cout << "You have chosen our custom pizza.\n" << endl; 
+        cout<<fixed<<showpoint<<setprecision(2)<<endl;
+
+          toppings(total, numtop, price); 
+   }
+
+payment(); //Card Payment
+
+
+ return 0;
+ 
+}
+//END OF MAIN********************************************
+
+void showSpecialtyMenu()
+ {
+ cout <<"\n\t\t\t----- Menu -----\t\t\n";
+ cout << "\nType of Pizza ------------------ Size ----------------- Price \n\n"
+ << "1. CARNIVORE\t\t\t 5. Small ------------- $10.00\n"
+ << "2. BBQ CHICKEN\t\t\t 6. Medium ------------ $15.00\n"
+ << "3. HAWAIIAN\t\t\t 7. Large ------------- $20.00\n"
+ << "4. Quit the Program\n\n"
+ << "- Which specialty pizza would you like?\n"  
+ << "Enter your numbered choice (numbers 1-4): ";
+ }
+
+
+ void showSubTotal(double & totalSpes,double size, int quantity)
+  {
+      cout << fixed << showpoint << setprecision(2);
+      cout << "The total is : $"
+      << (size / 100 ) * 6.75 +(size * quantity) << endl;
+      totalSpes = (size / 100 ) * 6.75 +(size * quantity);
+      
+  }
+
+
+
+void toppings(double & total, double & numtop, double & price )
+{
+  int  num, typetop, selection;
+  
+ cout<<"Let's begin building your own pizza!\n\n";
+ cout<<"1. Small\t\t $10.00\n";
+ cout<<"2. Medium\t\t $13.00\n";
+ cout<<"3. Large\t\t $16.00\n";
+ cout<<"4. X Large\t\t $19.00\n";
+ cout<<"Toppings \t\t $1.00\n";
+ cout << "Enter the pizza size you would like:" << endl;
+ cin>>selection;
+ while(selection > 4 || selection <0)
+ {
+   cout<<"Sorry that is not a valid entry.\n";
+   cin>>selection;
+ }
+ switch (selection)
+ {
+   case 1:
+   cout<<"How many toppings would you like for\n";
+   cout<<"your Small pizza?"<<endl; 
+   price = 10.00;
+   break;
+   
+   case 2:
+   cout<<"How many toppings would you like for\n";
+   cout<<"your Medium pizza?"<<endl;
+   price = 13.00;
+   break;
+   
+   case 3:
+   cout<<"How many toppings would you like for\n";
+   cout<<"your Large pizza?"<<endl;
+   price = 16.00;
+   break;
+   
+   case 4:
+   cout<<"How many toppings would you like for\n";
+   cout<<"your X Large pizza?"<<endl;
+   price = 19.00;
+   break;
+   
+ }
+ 
+
+ 
+//********************ARRAY***********************
+
+ int topp, pepperoni; 
+
+  
+      cin >> topp;
+
+    cout<<"Select the "<<topp<< " toppings you would like:\n";
+ 
+      string toppings[] = {"TOPPINGS", "1.Peperoni", "2.Sausage", "3.Pineapple", "4.Jalapenos",
+                            "5.Bacon", "6.Chicken", "7.Salami",
+                            "8.Olives", "9.Mushrooms", "10.Bell Peppers", "11.Onions", "12.Artichoke" };
+                            
+    cout << "Here are the toppings:\n\n";
+
+        // Display the values in the array. 
+        for (string val : toppings)
+        cout << val << endl;
+                            
+        unique_ptr<int[]> ptr( new int[topp]);
+
+    // Get values for the array.
+    for (int index = 1; index <= topp; index++)
+      {
+        cout << "\nEnter topping " << index << ":";
+        cin >> ptr[index];
+        
+        //User can only select toppings 1-12
+          if(ptr[index] <=0 || ptr[index] > 12)
+           {
+            cout<<"Sorry that is not a valid input."<<endl; 
+            index--;
+            }
+      }
+    
+      // Display the values in the array.
+        cout << "\nHere are the toppings you entered:\n";
+        for (int index = 1; index <= topp; index++)
+        {
+        cout << toppings[ptr[index]]  <<endl;
+        }
+ 
+  
+  cout<<fixed<<showpoint<<setprecision(2)<<endl;
+  cout<<"Your total is: $"<<(((price/100)*6.25)+price+numtop) << endl << endl;
+  
+  total = (((price/100)*6.25)+price+numtop);
+   cout<<"Thank you! Your order will be ready in 20 minutes."<<endl;
+  
+  
+}
+
+void payment()
+{
+  int paytype, cvc;
+  long long cardNum;
+  
+    cout<<"\nEnter payment type:\n1.Credit\n2.Debit"<<endl;
+    cin>>paytype;
+    
+    while(paytype != 1 && paytype != 2)
+      {
+        cout<<"Please enter a valid payment type option."<<endl;
+        cin>>paytype;
+      }
+  
+  
+  if(paytype == 1 || paytype ==2);
+    {
+      cout << "Enter credit card number" << endl;
+      cin >> cardNum;
+        while (10000000000000000 <= cardNum || cardNum <= 999999999999999)
+          {
+            cout << "Please input a 16 digit card number." << endl;
+            cin >> cardNum;
+          }
+      cout << "Enter the CVC code in the back of your card."<< endl;
+      cin >> cvc;
+      while(999 <= cvc || cvc < 99)
+        {
+          cout<<"Enter Valid CVC code.";
+          cin >> cvc;
+        }
+
+        while (1000000000 <= cardNum || cardNum <= 99999999)
+          {
+            cout << "Please input a 9 digit phone number." << endl;
+            cin >> cardNum;
+          }
+
+      cout << "Thank you. If there is any problem with your\n";
+      cout << "card, we will contact you." << endl;
+      
+    }
+    
+}
